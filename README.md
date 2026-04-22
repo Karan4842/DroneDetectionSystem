@@ -1,3 +1,8 @@
+<img width="1223" height="673" alt="image" src="https://github.com/user-attachments/assets/488f1584-740d-4ca5-b389-ced62ee4ca4c" />
+<img width="1250" height="645" alt="image" src="https://github.com/user-attachments/assets/57901c12-3e67-41c0-b9b4-e3ba31405a5e" />
+<img width="1225" height="636" alt="image" src="https://github.com/user-attachments/assets/77885de5-0039-4f71-b687-3fe75f37c410" />
+<img width="1248" height="646" alt="image" src="https://github.com/user-attachments/assets/d776303d-5499-45af-ab07-59ca7ee8ec02" />
+
 # Drone Threat Command Dashboard
 
 An AI-based drone threat monitoring system for restricted or sensitive areas such as airport perimeters. The project combines computer vision, threat analysis, geofencing, alert logging, a FastAPI backend, and a React dashboard to support real-time monitoring and easy image-based testing.
