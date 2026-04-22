@@ -13,6 +13,7 @@ export default defineConfig({
       "/alerts": "http://127.0.0.1:8000",
       "/evidence": "http://127.0.0.1:8000",
       "/artifacts": "http://127.0.0.1:8000",
+      "/live": "http://127.0.0.1:8000",
       "/analyze-image": "http://127.0.0.1:8000",
       "/detector": "http://127.0.0.1:8000"
     }
