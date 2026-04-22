@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.edge-profile/
+.edge-profile2/
+.edge-profile3/
+frontend/node_modules/
+frontend/dist/
+outputs/
+Ultralytics/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+*.log

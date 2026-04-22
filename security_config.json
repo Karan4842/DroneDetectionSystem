@@ -1,0 +1,57 @@
+{
+  "site_name": "Airport Perimeter Demo",
+  "sensor_stack": {
+    "camera_enabled": true,
+    "radar_enabled": false,
+    "rf_sensor_enabled": false
+  },
+  "suspicious_classes": [
+    "drone",
+    "airplane",
+    "helicopter",
+    "bird"
+  ],
+  "restricted_zones": [
+    {
+      "name": "Runway Approach",
+      "x1": 0.2,
+      "y1": 0.15,
+      "x2": 0.8,
+      "y2": 0.65
+    },
+    {
+      "name": "Terminal Roofline",
+      "x1": 0.1,
+      "y1": 0.05,
+      "x2": 0.9,
+      "y2": 0.22
+    }
+  ],
+  "risk_weights": {
+    "base_detection": 35,
+    "zone_intrusion": 45,
+    "high_confidence_bonus": 10,
+    "large_object_bonus": 10,
+    "loitering_bonus": 10,
+    "speed_bonus": 8,
+    "approach_bonus": 12
+  },
+  "confidence_thresholds": {
+    "detection": 0.3,
+    "high": 0.7
+  },
+  "size_thresholds": {
+    "large_object_ratio": 0.08
+  },
+  "tracking_thresholds": {
+    "max_distance_pixels": 80,
+    "max_missed_frames": 20,
+    "loitering_frames": 30,
+    "fast_movement_pixels": 35
+  },
+  "alert_threshold": 70,
+  "alert_cooldown_seconds": 15,
+  "save_all_frames": false,
+  "save_alert_frames": true,
+  "show_labels": true
+}
