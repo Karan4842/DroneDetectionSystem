@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-import json
 from datetime import datetime, timezone
+import json
+import math
 from pathlib import Path
+import random
 from typing import Iterable
 
 import cv2
@@ -16,6 +18,11 @@ BASE_DIR = Path(__file__).resolve().parent
 def load_config(config_path: str) -> dict:
     with open(config_path, "r", encoding="utf-8") as config_file:
         return json.load(config_file)
+
+
+def save_config(config: dict, config_path: str) -> None:
+    with open(config_path, "w", encoding="utf-8") as config_file:
+        json.dump(config, config_file, indent=2)
 
 
 def ensure_output_dir(base_dir: str = "outputs") -> Path:
@@ -82,6 +89,8 @@ def calculate_risk_score(
     estimated_speed: float,
     moving_towards_zone: bool,
     config: dict,
+    rf_confidence: float = 0.0,
+    radar_detected: bool = False,
 ) -> int:
     weights = config["risk_weights"]
     thresholds = config["confidence_thresholds"]
@@ -99,6 +108,12 @@ def calculate_risk_score(
         score += weights["speed_bonus"]
     if moving_towards_zone:
         score += weights["approach_bonus"]
+
+    # Sensor Fusion Bonus
+    if rf_confidence > 0.6:
+        score += 10
+    if radar_detected:
+        score += 10
 
     return min(score, 100)
 
@@ -129,7 +144,7 @@ def draw_detection(
         "high": (0, 140, 255),
         "critical": (0, 0, 255),
     }
-    color = colors[severity]
+    color = colors.get(severity, (0, 255, 0))
     cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
 
     if show_labels:
@@ -166,7 +181,7 @@ def draw_restricted_zones(frame, zones: list[dict]) -> None:
 
 def draw_status_banner(frame, site_name: str, active_alerts: int, active_tracks: int) -> None:
     banner_text = (
-        f"{site_name} | Human review required | Active alerts: {active_alerts} | "
+        f"{site_name} | AI Monitor | Active alerts: {active_alerts} | "
         f"Tracks: {active_tracks}"
     )
     cv2.rectangle(frame, (0, 0), (frame.shape[1], 40), (20, 20, 20), -1)
@@ -213,7 +228,7 @@ def enrich_detections(
 ) -> list[dict]:
     frame_height, frame_width = frame.shape[:2]
     frame_area = max(frame_height * frame_width, 1)
-    zones = config["restricted_zones"]
+    zones = config.get("restricted_zones", [])
     enriched = []
 
     draw_restricted_zones(frame, zones)
@@ -273,6 +288,71 @@ def enrich_detections(
         )
 
     return enriched
+
+
+def generate_sensor_telemetry(detections: list[dict], site_name: str, config: dict) -> dict:
+    """
+    Multi-sensor fusion simulator:
+    Combines optical bounding box coordinates with simulated RF frequency analysis,
+    Radar azimuth/distance, and acoustic harmonic signatures.
+    """
+    radar_tracks = []
+    rf_signals = []
+    protocols = ["DJI OcuSync 3.0", "Autel SkyLink", "ExpressLRS 2.4G", "Analog Video 5.8G", "Custom FPV"]
+
+    for det in detections:
+        track_id = det.get("track_id", 1)
+        box = det.get("box", [100, 100, 200, 200])
+        cx, cy = (box[0] + box[2]) / 2.0, (box[1] + box[3]) / 2.0
+
+        # Radar calculation (polar coordinates mapped from visual center)
+        azimuth_deg = round((cx / 640.0) * 120.0 - 60.0, 1)  # -60 to +60 deg FOV
+        distance_m = round(max(30.0, 1200.0 - (cy * 1.5)), 1) # closer at bottom
+        elevation_deg = round(max(5.0, 45.0 - (cy / 640.0) * 35.0), 1)
+        rcs_m2 = round(0.01 + (det.get("confidence", 0.5) * 0.05), 3) # small UAV RCS
+
+        radar_tracks.append({
+            "track_id": track_id,
+            "azimuth_deg": azimuth_deg,
+            "range_meters": distance_m,
+            "elevation_deg": elevation_deg,
+            "velocity_mps": round(det.get("estimated_speed", 5.0) * 0.8, 1),
+            "rcs_m2": rcs_m2,
+            "threat_level": det.get("severity", "low")
+        })
+
+        # RF Telemetry calculation
+        rf_freq = 2412 + (track_id * 15) % 80 if (track_id % 2 == 0) else 5745 + (track_id * 20) % 120
+        rf_signals.append({
+            "track_id": track_id,
+            "frequency_mhz": rf_freq,
+            "rssi_dbm": round(-45 - (distance_m / 25.0), 1),
+            "protocol": protocols[track_id % len(protocols)],
+            "remote_id_broadcast": bool(track_id % 3 == 0),
+            "signal_snr_db": round(24.5 - (distance_m / 60.0), 1)
+        })
+
+    # Global acoustic noise floor
+    acoustic_signature = {
+        "blade_pass_freq_hz": 180 + int(random.random() * 40) if detections else 0,
+        "acoustic_snr_db": 12.4 if detections else 2.1,
+        "drone_audio_match": bool(detections and len(detections) > 0)
+    }
+
+    return {
+        "timestamp_utc": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),
+        "site_name": site_name,
+        "sensors_active": {
+            "optical_camera": config.get("sensor_stack", {}).get("camera_enabled", True),
+            "pulse_doppler_radar": config.get("sensor_stack", {}).get("radar_enabled", True),
+            "rf_spectrum_analyzer": config.get("sensor_stack", {}).get("rf_sensor_enabled", True),
+            "acoustic_array": True
+        },
+        "radar_tracks": radar_tracks,
+        "rf_signals": rf_signals,
+        "acoustic_telemetry": acoustic_signature,
+        "fused_threat_count": len(detections)
+    }
 
 
 def save_frame(frame, output_dir: Path, frame_index: int) -> None:

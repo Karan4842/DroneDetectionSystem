@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  drone-threat-system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: drone_threat_command
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./outputs:/app/outputs
+      - ./security_config.json:/app/security_config.json
+    environment:
+      - YOLO_CONFIG_DIR=/app/outputs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

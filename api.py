@@ -1,39 +1,53 @@
 from __future__ import annotations
 
+import asyncio
 from collections import Counter
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
 import subprocess
 import sys
+import time
+from typing import AsyncGenerator
 from uuid import uuid4
 
 os.environ.setdefault("YOLO_CONFIG_DIR", "outputs")
 
 import cv2
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import Body, FastAPI, File, HTTPException, Query, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import PlainTextResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from ultralytics import YOLO
 
-from reporting import build_alert_analytics, build_text_report, load_alerts
+from reporting import (
+    build_alert_analytics,
+    build_csv_report,
+    build_json_export,
+    build_text_report,
+    load_alerts,
+)
 from security import (
     enrich_detections,
     extract_detections,
+    generate_sensor_telemetry,
     load_config,
     normalize_classes,
     resolve_model_source,
+    save_config,
 )
 from tracker import CentroidTracker
 
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUTS_DIR = BASE_DIR / "outputs"
-LOG_PATH = OUTPUTS_DIR / "logs" / "alerts.jsonl"
+LOGS_DIR = OUTPUTS_DIR / "logs"
+LOG_PATH = LOGS_DIR / "alerts.jsonl"
+COUNTERMEASURES_LOG_PATH = LOGS_DIR / "countermeasures.jsonl"
 CONFIG_PATH = BASE_DIR / "security_config.json"
 ALERTS_DIR = OUTPUTS_DIR / "alerts"
-RUNTIME_STATUS_PATH = OUTPUTS_DIR / "logs" / "runtime_status.json"
+RUNTIME_STATUS_PATH = LOGS_DIR / "runtime_status.json"
 UPLOADS_DIR = OUTPUTS_DIR / "uploads"
 UPLOAD_RESULTS_DIR = UPLOADS_DIR / "results"
 LIVE_DIR = OUTPUTS_DIR / "live"
@@ -43,8 +57,14 @@ MODEL_PATH = BASE_DIR.parent / "yolov8n.pt"
 ALERTS_DIR.mkdir(parents=True, exist_ok=True)
 UPLOAD_RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 LIVE_DIR.mkdir(parents=True, exist_ok=True)
+LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
-app = FastAPI(title="Drone Threat API", version="1.0.0")
+app = FastAPI(
+    title="Drone Threat Command & Detection API",
+    description="Enterprise Multi-Sensor Drone Detection, Geofencing, and C-UAS Countermeasure API",
+    version="2.0.0"
+)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -52,12 +72,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 app.mount("/evidence", StaticFiles(directory=str(ALERTS_DIR)), name="evidence")
 app.mount("/artifacts", StaticFiles(directory=str(UPLOAD_RESULTS_DIR)), name="artifacts")
 app.mount("/live", StaticFiles(directory=str(LIVE_DIR)), name="live")
 
 _model: YOLO | None = None
 _detector_process: subprocess.Popen | None = None
+_active_countermeasures: list[dict] = []
 
 
 def build_summary(alerts: list[dict]) -> dict:
@@ -99,7 +121,7 @@ def read_runtime_status() -> dict:
     if not RUNTIME_STATUS_PATH.exists():
         return {
             "running": False,
-            "site_name": load_config(str(CONFIG_PATH)).get("site_name"),
+            "site_name": load_config(str(CONFIG_PATH)).get("site_name", "Perimeter Zone"),
             "source": None,
             "resolved_source": None,
             "frame_index": 0,
@@ -110,7 +132,10 @@ def read_runtime_status() -> dict:
             "latest_detections": [],
             "image_mode": False,
         }
-    return json.loads(RUNTIME_STATUS_PATH.read_text(encoding="utf-8"))
+    try:
+        return json.loads(RUNTIME_STATUS_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {"running": False, "site_name": "Perimeter Zone", "active_tracks": 0}
 
 
 def detector_process_running() -> bool:
@@ -139,15 +164,15 @@ def analyze_image_file(image_path: Path) -> dict:
     config = load_config(str(CONFIG_PATH))
     model = get_model()
     tracker = CentroidTracker(
-        max_distance=float(config["tracking_thresholds"]["max_distance_pixels"]),
-        max_missed_frames=int(config["tracking_thresholds"]["max_missed_frames"]),
+        max_distance=float(config.get("tracking_thresholds", {}).get("max_distance_pixels", 80)),
+        max_missed_frames=int(config.get("tracking_thresholds", {}).get("max_missed_frames", 20)),
     )
     watched_classes = normalize_classes(config.get("suspicious_classes", []))
 
     results = model.predict(
         source=str(image_path),
         stream=False,
-        conf=float(config["confidence_thresholds"]["detection"]),
+        conf=float(config.get("confidence_thresholds", {}).get("detection", 0.3)),
         verbose=False,
     )
     result = results[0]
@@ -171,7 +196,7 @@ def analyze_image_file(image_path: Path) -> dict:
         "site_name": config["site_name"],
         "detections": detections,
         "threat_count": len(detections),
-        "high_risk_count": sum(1 for item in detections if item["risk_score"] >= config["alert_threshold"]),
+        "high_risk_count": sum(1 for item in detections if item["risk_score"] >= config.get("alert_threshold", 70)),
         "annotated_image_url": f"/artifacts/{output_name}",
     }
 
@@ -187,14 +212,104 @@ def list_sample_inputs() -> list[str]:
     )
 
 
+# --- Video Streaming Generator (MJPEG) ---
+async def mjpeg_frame_generator() -> AsyncGenerator[bytes, None]:
+    """
+    Yields live JPEG frames in MJPEG stream format.
+    Streams latest.jpg from running detector, or falls back to animated test frames with YOLO inference.
+    """
+    latest_frame_file = LIVE_DIR / "latest.jpg"
+    sample_files = list_sample_inputs()
+    sample_idx = 0
+    config = load_config(str(CONFIG_PATH))
+    model = get_model()
+    tracker = CentroidTracker()
+
+    while True:
+        frame_bytes = None
+
+        # 1. Prefer live frame generated by active detector (managed process OR external main.py)
+        is_live_active = detector_process_running()
+        if not is_live_active and latest_frame_file.exists():
+            try:
+                # If modified within the last 4 seconds, treat as active live feed
+                if (time.time() - latest_frame_file.stat().st_mtime) < 4.0:
+                    is_live_active = True
+            except Exception:
+                pass
+
+        if is_live_active and latest_frame_file.exists():
+            try:
+                frame_bytes = latest_frame_file.read_bytes()
+            except Exception:
+                pass
+
+        # 2. Fallback: Stream sample simulation frames
+        if frame_bytes is None:
+            if sample_files:
+                sample_path = SAMPLE_INPUTS_DIR / sample_files[sample_idx % len(sample_files)]
+                img = cv2.imread(str(sample_path))
+                if img is not None:
+                    # Run lightweight inference
+                    results = model.predict(source=img, conf=0.25, verbose=False)
+                    raw_dets = extract_detections(results[0], normalize_classes(config.get("suspicious_classes", [])))
+                    tracker.update(raw_dets, sample_idx)
+                    enrich_detections(img, raw_dets, tracker.tracks, True, config)
+                    
+                    # Add simulation badge overlay
+                    cv2.putText(
+                        img,
+                        "SIMULATION FEED (Start Detector for Live Camera)",
+                        (15, 30),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.55,
+                        (0, 215, 255),
+                        2,
+                    )
+                    _, buffer = cv2.imencode(".jpg", img, [cv2.IMWRITE_JPEG_QUALITY, 80])
+                    frame_bytes = buffer.tobytes()
+                    sample_idx += 1
+            else:
+                # Synthetic radar placeholder frame
+                blank = 30 * cv2.UMat(480, 640, cv2.CV_8UC3).get()
+                cv2.putText(blank, "Awaiting Camera Feed...", (140, 230), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (116, 216, 208), 2)
+                cv2.putText(blank, "Click 'Start Live Detector' to connect camera", (100, 270), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (160, 180, 190), 1)
+                _, buffer = cv2.imencode(".jpg", blank)
+                frame_bytes = buffer.tobytes()
+
+        if frame_bytes:
+            yield (
+                b"--frame\r\n"
+                b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n"
+            )
+
+        await asyncio.sleep(0.12)  # ~8-10 FPS for bandwidth-friendly dashboard preview
+
+
+# --- Endpoints ---
+
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok"}
+    return {"status": "ok", "version": "2.0.0", "system": "Drone Threat Command"}
 
 
 @app.get("/config")
-def config() -> dict:
+def get_configuration() -> dict:
     return load_config(str(CONFIG_PATH))
+
+
+@app.put("/config")
+def update_configuration(new_config: dict = Body(...)) -> dict:
+    save_config(new_config, str(CONFIG_PATH))
+    return {"status": "success", "message": "Configuration updated successfully", "config": new_config}
+
+
+@app.post("/config/zones")
+def update_zones(zones: list[dict] = Body(...)) -> dict:
+    config = load_config(str(CONFIG_PATH))
+    config["restricted_zones"] = zones
+    save_config(config, str(CONFIG_PATH))
+    return {"status": "success", "restricted_zones": zones}
 
 
 @app.get("/summary")
@@ -225,6 +340,81 @@ def detector_status() -> dict:
     return detector_control_status()
 
 
+@app.get("/video_feed")
+def video_feed():
+    """Real-time MJPEG video stream with bounding boxes and zone overlays."""
+    return StreamingResponse(
+        mjpeg_frame_generator(),
+        media_type="multipart/x-mixed-replace; boundary=frame"
+    )
+
+
+@app.get("/sensors/telemetry")
+def sensor_telemetry() -> dict:
+    """Multi-sensor telemetry stream (Radar tracks, RF signatures, Acoustic analytics)."""
+    runtime = read_runtime_status()
+    config = load_config(str(CONFIG_PATH))
+    latest_detections = runtime.get("latest_detections", [])
+    return generate_sensor_telemetry(
+        detections=latest_detections,
+        site_name=config.get("site_name", "Protected Area"),
+        config=config
+    )
+
+
+@app.get("/countermeasures/status")
+def countermeasures_status() -> dict:
+    """Returns active and historical C-UAS mitigation actions."""
+    if not COUNTERMEASURES_LOG_PATH.exists():
+        logs = []
+    else:
+        logs = [
+            json.loads(line)
+            for line in COUNTERMEASURES_LOG_PATH.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ][-20:]
+    return {
+        "active_engagements": _active_countermeasures,
+        "total_engagements": len(logs),
+        "recent_logs": logs[::-1]
+    }
+
+
+@app.post("/countermeasures/trigger")
+def trigger_countermeasure(
+    action: str = Query(..., description="Action: RF_JAMMING_DIRECTIONAL, GNSS_SPOOFING_DEFENSE, ACOUSTIC_SIREN, ATC_NOTIFY"),
+    target_track_id: int | None = Query(None, description="Optional target track ID")
+) -> dict:
+    """Dispatches a C-UAS countermeasure action."""
+    valid_actions = {"RF_JAMMING_DIRECTIONAL", "GNSS_SPOOFING_DEFENSE", "ACOUSTIC_SIREN", "ATC_NOTIFY"}
+    if action not in valid_actions:
+        raise HTTPException(status_code=400, detail=f"Invalid action. Choose from {sorted(valid_actions)}")
+
+    engagement = {
+        "action_id": f"act_{uuid4().hex[:8]}",
+        "action_type": action,
+        "target_track_id": target_track_id,
+        "timestamp_utc": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),
+        "status": "ENGAGED",
+        "power_output_dbm": 43.0 if "JAMMING" in action else None,
+        "estimated_efficacy": 94.5 if "JAMMING" in action else 99.0
+    }
+
+    _active_countermeasures.append(engagement)
+    if len(_active_countermeasures) > 5:
+        _active_countermeasures.pop(0)
+
+    # Append to log
+    with COUNTERMEASURES_LOG_PATH.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(engagement) + "\n")
+
+    return {
+        "status": "success",
+        "message": f"Countermeasure {action} dispatched against Track {target_track_id or 'ALL'}.",
+        "engagement": engagement
+    }
+
+
 @app.get("/alerts")
 def alerts(limit: int = 20) -> list[dict]:
     items = load_alerts(LOG_PATH)
@@ -246,6 +436,30 @@ def alert_by_id(event_id: str) -> dict:
 def report() -> str:
     alerts = load_alerts(LOG_PATH)
     return build_text_report(alerts)
+
+
+@app.get("/report/csv")
+def report_csv():
+    alerts = load_alerts(LOG_PATH)
+    csv_data = build_csv_report(alerts)
+    filename = f"drone_threat_report_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv"
+    return Response(
+        content=csv_data,
+        media_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
+
+@app.get("/report/json")
+def report_json():
+    alerts = load_alerts(LOG_PATH)
+    json_data = build_json_export(alerts)
+    filename = f"drone_threat_report_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
+    return Response(
+        content=json_data,
+        media_type="application/json",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
 
 
 @app.get("/demo/scenarios")

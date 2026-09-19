@@ -1,0 +1,287 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 7 0 R 10 0 R 13 0 R 16 0 R] /Count 5 >>
+endobj
+3 0 obj
+<< /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> /F2 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> >> >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 5 0 R /Resources 3 0 R >>
+endobj
+5 0 obj
+<< /Length 5224 >>
+stream
+1 1 1 rg 0 0 595 842 re f
+0.06 0.10 0.17 rg 42 747.00 511 65 re f
+0.20 0.60 0.86 rg 42 747.00 4 65 re f
+0.450 0.800 0.950 rg BT /F2 7.5 Tf 1 0 0 1 58.00 794.00 Tm (ENTERPRISE COUNTER-UAS \(C-UAS\) PLATFORM) Tj ET
+1.000 1.000 1.000 rg BT /F2 15 Tf 1 0 0 1 58.00 774.00 Tm (Drone Threat Command & Detection System) Tj ET
+0.800 0.860 0.920 rg BT /F1 8.8 Tf 1 0 0 1 58.00 758.00 Tm (Full Technical Architecture, Engineering Deep-Dive & Interview Master Guide) Tj ET
+0.11 0.16 0.24 rg 42 714.00 511 20 re f
+1.000 1.000 1.000 rg BT /F2 10.2 Tf 1 0 0 1 50.00 718.00 Tm (1. EXECUTIVE SUMMARY & THREAT LANDSCAPE) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 706.00 Tm (Low-altitude micro and commercial drones \(UAS\) present acute security vulnerabilities for critical) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 694.80 Tm (infrastructure - including commercial airports, military defense perimeters, government buildings, energy grids,) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 683.60 Tm (and public stadiums. Small radar cross-sections \(RCS\) and agile flight allow unauthorized drones to bypass) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 672.40 Tm (traditional radar surveillance.) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 659.20 Tm (The Drone Threat Command & Detection System is a high-performance counter-unmanned aircraft system \(C-UAS\)) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 648.00 Tm (integrating deep learning computer vision, centroid multi-object tracking, multi-sensor data fusion, dynamic) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 636.80 Tm (geofencing, threat risk scoring, and tactical electronic countermeasures into a centralized operator dashboard.) Tj ET
+0.11 0.16 0.24 rg 42 605.60 511 20 re f
+1.000 1.000 1.000 rg BT /F2 10.2 Tf 1 0 0 1 50.00 609.60 Tm (2. HIGH-LEVEL SYSTEM ARCHITECTURE & DATA FLOW) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 597.60 Tm (The system operates across a modular four-tier architecture designed for low latency \(<40ms\) and multi-sensor) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 586.40 Tm (resilience:) Tj ET
+0.14 0.20 0.28 rg 42 557.20 511 16 re f
+1.000 1.000 1.000 rg BT /F2 8.0 Tf 1 0 0 1 46.00 561.20 Tm (Layer / Subsystem) Tj ET
+1.000 1.000 1.000 rg BT /F2 8.0 Tf 1 0 0 1 156.00 561.20 Tm (Primary Technologies) Tj ET
+1.000 1.000 1.000 rg BT /F2 8.0 Tf 1 0 0 1 306.00 561.20 Tm (Core Operational Responsibility) Tj ET
+0.970 0.980 0.990 rg 42 541.20 511 14 re f
+0.88 0.90 0.93 rg 42 541.20 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 545.20 Tm (1. Perception Layer) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 156.00 545.20 Tm (OpenCV, YOLOv8, SDR / RF, Radar Scope) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 306.00 545.20 Tm (Raw video ingestion, RF spectrum scanning \(2.4/5.8GHz\), Doppler radar simulation.) Tj ET
+1.000 1.000 1.000 rg 42 527.20 511 14 re f
+0.88 0.90 0.93 rg 42 527.20 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 531.20 Tm (2. Tracking & Fusion) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 156.00 531.20 Tm (Centroid Tracker, NumPy, Trajectory Cache) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 306.00 531.20 Tm (Target association, velocity estimation \(px/frame\), and multi-sensor telemetry fusion.) Tj ET
+0.970 0.980 0.990 rg 42 513.20 511 14 re f
+0.88 0.90 0.93 rg 42 513.20 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 517.20 Tm (3. Geofence & Risk) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 156.00 517.20 Tm (Coordinate Mapping, Risk Scoring Engine) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 306.00 517.20 Tm (Polygon boundary checks, inbound heading calculation, and 0-100 threat categorization.) Tj ET
+1.000 1.000 1.000 rg 42 499.20 511 14 re f
+0.88 0.90 0.93 rg 42 499.20 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 503.20 Tm (4. Defense & C2) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 156.00 503.20 Tm (FastAPI, React 18, Web Audio, MJPEG) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 306.00 503.20 Tm (Countermeasure dispatch \(RF Jamming / GNSS / ATC\), live streaming, and reporting.) Tj ET
+0.940 0.970 1.000 rg 42 433.60 511 59.599999999999994 re f
+0.200 0.600 0.860 rg 42 433.60 3.5 59.599999999999994 re f
+0.200 0.600 0.860 rg BT /F2 8.8 Tf 1 0 0 1 52.00 479.20 Tm (KEY ARCHITECTURAL HIGHLIGHT: ZERO-LATENCY MJPEG STREAMING) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 467.20 Tm (- Asynchronous FastAPI multipart replacement streaming \(multipart/x-mixed-replace; boundary=frame\).) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 456.00 Tm (- Yields JPEG byte streams natively rendered by HTML5 <img> tags with zero client-side buffering latency.) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 444.80 Tm (- Seamlessly switches between live camera hardware and high-fidelity simulated tactical drone footage.) Tj ET
+0.82 0.86 0.90 rg 42 32.00 511 0.8 re f
+0.450 0.480 0.520 rg BT /F1 7.2 Tf 1 0 0 1 42.00 17.00 Tm (CONFIDENTIAL & PREPARED FOR TECHNICAL REVIEWS | C-UAS AIRSPACE DEFENSE) Tj ET
+0.200 0.250 0.300 rg BT /F2 8.0 Tf 1 0 0 1 510.76 17.00 Tm (Page 1 of 5) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 8 0 R /Resources 3 0 R >>
+endobj
+8 0 obj
+<< /Length 4776 >>
+stream
+1 1 1 rg 0 0 595 842 re f
+0.11 0.16 0.23 rg 42 812.00 511 1.2 re f
+0.350 0.450 0.550 rg BT /F2 7.5 Tf 1 0 0 1 42.00 818.00 Tm (DRONE THREAT COMMAND & DETECTION SYSTEM | TECHNICAL GUIDE) Tj ET
+0.11 0.16 0.24 rg 42 778.00 511 20 re f
+1.000 1.000 1.000 rg BT /F2 10.2 Tf 1 0 0 1 50.00 782.00 Tm (3. COMPUTER VISION & OBJECT TRACKING DEEP-DIVE) Tj ET
+0.080 0.280 0.500 rg BT /F2 9.5 Tf 1 0 0 1 42.00 760.00 Tm (3.1. Deep Convolutional Detection Pipeline \(Ultralytics YOLOv8\)) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 755.00 Tm (The vision engine ingests high-resolution video frames at 30 FPS. Color normalization and tensor transformations) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 743.80 Tm (feed into a YOLOv8 network optimized for aerial contours. Bounding box coordinates \(x1, y1, x2, y2\), class IDs,) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 732.60 Tm (and confidence probabilities are extracted and filtered against monitored airborne classes \(drone, airplane,) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 721.40 Tm (helicopter, bird\).) Tj ET
+0.080 0.280 0.500 rg BT /F2 9.5 Tf 1 0 0 1 42.00 698.20 Tm (3.2. Centroid Multi-Object Tracking & State Estimation \(tracker.py\)) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 693.20 Tm (Single-frame detection lacks temporal awareness. The Centroid Tracker associates detections across consecutive) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 682.00 Tm (frames to maintain consistent target identities and compute kinematic state parameters:) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 668.80 Tm (- 1. Centroid Computation: Derives spatial midpoint C = \(\(x1 + x2\)/2, \(y1 + y2\)/2\).) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 655.60 Tm (- 2. Euclidean Association: Minimizes distance d\(P1, P2\) = sqrt\(\(x2-x1\)^2 + \(y2-y1\)^2\) against existing) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 644.40 Tm (  tracks.) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 631.20 Tm (- 3. Velocity & History: Calculates displacement \(px/frame\) and maintains a 30-frame coordinate history) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 620.00 Tm (  path.) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 606.80 Tm (- 4. Track Aging & Recovery: Tolerates up to 20 missed frames during visual occlusions before) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 595.60 Tm (  deregistration.) Tj ET
+0.11 0.16 0.24 rg 42 564.40 511 20 re f
+1.000 1.000 1.000 rg BT /F2 10.2 Tf 1 0 0 1 50.00 568.40 Tm (4. DYNAMIC GEOFENCING & THREAT RISK SCORING) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 556.40 Tm (To eliminate false alarm fatigue, the system computes a multi-factor Threat Risk Score \(0-100\) dynamically using) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 545.20 Tm (spatial geometry, heading vectors, and sensor confirmation:) Tj ET
+1.000 0.960 0.940 rg 42 450.00 511 82.0 re f
+0.850 0.350 0.200 rg 42 450.00 3.5 82.0 re f
+0.850 0.350 0.200 rg BT /F2 8.8 Tf 1 0 0 1 52.00 518.00 Tm (THREAT RISK SCORING FORMULA & OPERATIONAL THRESHOLDS) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 506.00 Tm (Risk Score = W_base \(35\) + W_zone \(45\) + W_conf \(10\) + W_size \(10\) + W_loiter \(10\) + W_speed \(8\) + W_heading \(12\) + W_sensor) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 494.80 Tm (- CRITICAL \(Score >= 85\): Active breach inside high-security zone or high-speed inbound drone trajectory.) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 483.60 Tm (- HIGH \(Score 70 - 84\): Unidentified target inside restricted zone or loitering near perimeter boundary.) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 472.40 Tm (- MEDIUM \(Score 50 - 69\): Target detected moving toward boundary with confirmed RF/Radar signature.) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 461.20 Tm (- LOW \(Score < 50\): Distant aerial target maintaining outbound trajectory away from protected perimeter.) Tj ET
+0.080 0.280 0.500 rg BT /F2 9.5 Tf 1 0 0 1 42.00 434.00 Tm (4.1. Inbound Vector Heading Evaluation) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 429.00 Tm (The system calculates whether distance to the restricted zone centroid Z_c is decreasing: d\(C_t, Z_c\) < d\(C_t-1,) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 417.80 Tm (Z_c\). Inbound trajectories trigger immediate defensive pre-escalation before physical boundary violation occurs.) Tj ET
+0.82 0.86 0.90 rg 42 32.00 511 0.8 re f
+0.450 0.480 0.520 rg BT /F1 7.2 Tf 1 0 0 1 42.00 17.00 Tm (CONFIDENTIAL & PREPARED FOR TECHNICAL REVIEWS | C-UAS AIRSPACE DEFENSE) Tj ET
+0.200 0.250 0.300 rg BT /F2 8.0 Tf 1 0 0 1 510.76 17.00 Tm (Page 2 of 5) Tj ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 11 0 R /Resources 3 0 R >>
+endobj
+11 0 obj
+<< /Length 4536 >>
+stream
+1 1 1 rg 0 0 595 842 re f
+0.11 0.16 0.23 rg 42 812.00 511 1.2 re f
+0.350 0.450 0.550 rg BT /F2 7.5 Tf 1 0 0 1 42.00 818.00 Tm (DRONE THREAT COMMAND & DETECTION SYSTEM | TECHNICAL GUIDE) Tj ET
+0.11 0.16 0.24 rg 42 778.00 511 20 re f
+1.000 1.000 1.000 rg BT /F2 10.2 Tf 1 0 0 1 50.00 782.00 Tm (5. MULTI-SENSOR FUSION & ACTIVE COUNTERMEASURES) Tj ET
+0.080 0.280 0.500 rg BT /F2 9.5 Tf 1 0 0 1 42.00 760.00 Tm (5.1. Multi-Sensor Data Fusion Pipeline) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 755.00 Tm (Optical cameras are vulnerable to fog, darkness, and long ranges. The platform fuses three sensor modalities:) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 741.80 Tm (- - Pulse-Doppler Radar: Polar coordinates \(Azimuth 0-360 deg, Range 0-1500m, Elevation\), velocity \(m/s\),) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 730.60 Tm (  and RCS \(m^2\).) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 717.40 Tm (- - RF Spectrum Scanner: 2.4 GHz / 5.8 GHz ISM band telemetry, RSSI \(-95 to -30 dBm\), SNR, and Remote ID) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 706.20 Tm (  protocol decodes.) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 693.00 Tm (- - Acoustic Sensor Array: Propeller harmonic peak analysis \(120-450 Hz\) for visual blind-spot acoustic) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 681.80 Tm (  validation.) Tj ET
+0.080 0.280 0.500 rg BT /F2 9.5 Tf 1 0 0 1 42.00 658.60 Tm (5.2. Active C-UAS Electronic Countermeasure Dispatch \(CUAS Station\)) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 653.60 Tm (The operator command station supports automated and manual defensive mitigation workflows:) Tj ET
+0.14 0.20 0.28 rg 42 624.40 511 16 re f
+1.000 1.000 1.000 rg BT /F2 8.0 Tf 1 0 0 1 46.00 628.40 Tm (Mitigation Action) Tj ET
+1.000 1.000 1.000 rg BT /F2 8.0 Tf 1 0 0 1 166.00 628.40 Tm (Tactical Mechanism) Tj ET
+1.000 1.000 1.000 rg BT /F2 8.0 Tf 1 0 0 1 336.00 628.40 Tm (Operational Outcome) Tj ET
+0.970 0.980 0.990 rg 42 608.40 511 14 re f
+0.88 0.90 0.93 rg 42 608.40 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 612.40 Tm (Directional RF Jammer) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 166.00 612.40 Tm (Disrupts 2.4 / 5.8 GHz C2 command link) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 336.00 612.40 Tm (Forces drone into fail-safe Return-To-Home \(RTH\) or hover-descent.) Tj ET
+1.000 1.000 1.000 rg 42 594.40 511 14 re f
+0.88 0.90 0.93 rg 42 594.40 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 598.40 Tm (GNSS Spoofing Defense) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 166.00 598.40 Tm (Injects localized false GPS coordinate offsets) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 336.00 598.40 Tm (Diverts target away from restricted airspace boundary.) Tj ET
+0.970 0.980 0.990 rg 42 580.40 511 14 re f
+0.88 0.90 0.93 rg 42 580.40 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 584.40 Tm (Acoustic Siren Deterrent) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 166.00 584.40 Tm (High-decibel directional acoustic broadcast) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 336.00 584.40 Tm (Audible ground warning and wildlife dispersal near runways.) Tj ET
+1.000 1.000 1.000 rg 42 566.40 511 14 re f
+0.88 0.90 0.93 rg 42 566.40 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 570.40 Tm (Automated ATC Dispatch) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 166.00 570.40 Tm (Real-time automated priority tower advisory) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 336.00 570.40 Tm (Notifies Air Traffic Control tower of intruder vector and altitude.) Tj ET
+0.11 0.16 0.24 rg 42 542.40 511 20 re f
+1.000 1.000 1.000 rg BT /F2 10.2 Tf 1 0 0 1 50.00 546.40 Tm (6. TACTICAL OPERATOR DASHBOARD & WEB AUDIO API) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 534.40 Tm (Built in React 18 and Vite, the dashboard features an animated 360-degree radar scope canvas, live RF waterfall) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 523.20 Tm (monitor, and an in-browser Web Audio API tactical alarm synthesizer providing multi-frequency audible alert) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.5 Tf 1 0 0 1 42.00 512.00 Tm (chirps during critical incursions.) Tj ET
+0.82 0.86 0.90 rg 42 32.00 511 0.8 re f
+0.450 0.480 0.520 rg BT /F1 7.2 Tf 1 0 0 1 42.00 17.00 Tm (CONFIDENTIAL & PREPARED FOR TECHNICAL REVIEWS | C-UAS AIRSPACE DEFENSE) Tj ET
+0.200 0.250 0.300 rg BT /F2 8.0 Tf 1 0 0 1 510.76 17.00 Tm (Page 3 of 5) Tj ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 14 0 R /Resources 3 0 R >>
+endobj
+14 0 obj
+<< /Length 4659 >>
+stream
+1 1 1 rg 0 0 595 842 re f
+0.11 0.16 0.23 rg 42 812.00 511 1.2 re f
+0.350 0.450 0.550 rg BT /F2 7.5 Tf 1 0 0 1 42.00 818.00 Tm (DRONE THREAT COMMAND & DETECTION SYSTEM | TECHNICAL GUIDE) Tj ET
+0.11 0.16 0.24 rg 42 778.00 511 20 re f
+1.000 1.000 1.000 rg BT /F2 10.2 Tf 1 0 0 1 50.00 782.00 Tm (7. RESUME SHOWCASE & QUANTIFIED HIGHLIGHTS) Tj ET
+0.080 0.280 0.500 rg BT /F2 9.5 Tf 1 0 0 1 42.00 760.00 Tm (Recommended Resume Project Block) Tj ET
+0.940 0.970 1.000 rg 42 650.60 511 104.39999999999999 re f
+0.200 0.600 0.860 rg 42 650.60 3.5 104.39999999999999 re f
+0.200 0.600 0.860 rg BT /F2 8.8 Tf 1 0 0 1 52.00 741.00 Tm (DRONE THREAT COMMAND & MULTI-SENSOR C-UAS PLATFORM | Python, YOLOv8, FastAPI, React, Docker) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 729.00 Tm (- Engineered an end-to-end Counter-UAS airspace defense platform integrating real-time YOLOv8 object detection,) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 717.80 Tm (  Centroid multi-object tracking, and multi-sensor telemetry simulation \(Pulse-Doppler Radar & RF spectrum\).) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 706.60 Tm (- Developed dynamic geofencing and threat risk engine calculating trajectory approach vectors, loitering durations,) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 695.40 Tm (  and multi-factor risk scores \(0-100\) with automated immutable audit logging.) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 684.20 Tm (- Built an interactive operator tactical dashboard in React 18 with HTML5 360-degree animated radar canvas,) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 673.00 Tm (  Web Audio API alarm synthesizer, live MJPEG video streaming, and automated multi-format incident export \(CSV/JSON\).) Tj ET
+0.150 0.180 0.220 rg BT /F1 8.1 Tf 1 0 0 1 52.00 661.80 Tm (- Implemented asynchronous FastAPI microservices covered by a 20-test Pytest suite and containerized via Docker.) Tj ET
+0.11 0.16 0.24 rg 42 626.60 511 20 re f
+1.000 1.000 1.000 rg BT /F2 10.2 Tf 1 0 0 1 50.00 630.60 Tm (8. FULL TECHNOLOGY STACK & ENGINEERING MATRIX) Tj ET
+0.14 0.20 0.28 rg 42 602.60 511 16 re f
+1.000 1.000 1.000 rg BT /F2 8.0 Tf 1 0 0 1 46.00 606.60 Tm (System Layer) Tj ET
+1.000 1.000 1.000 rg BT /F2 8.0 Tf 1 0 0 1 156.00 606.60 Tm (Technologies / Tools) Tj ET
+1.000 1.000 1.000 rg BT /F2 8.0 Tf 1 0 0 1 316.00 606.60 Tm (Key Design Decision / Benefit) Tj ET
+0.970 0.980 0.990 rg 42 586.60 511 14 re f
+0.88 0.90 0.93 rg 42 586.60 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 590.60 Tm (AI & Computer Vision) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 156.00 590.60 Tm (YOLOv8, OpenCV, NumPy) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 316.00 590.60 Tm (High FPS edge inference with sub-pixel bounding box localization.) Tj ET
+1.000 1.000 1.000 rg 42 572.60 511 14 re f
+0.88 0.90 0.93 rg 42 572.60 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 576.60 Tm (Tracking & Geometry) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 156.00 576.60 Tm (Centroid Tracker, Euclidean Math) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 316.00 576.60 Tm (Zero external tracking dependencies; robust to occlusion aging.) Tj ET
+0.970 0.980 0.990 rg 42 558.60 511 14 re f
+0.88 0.90 0.93 rg 42 558.60 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 562.60 Tm (Backend API Engine) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 156.00 562.60 Tm (FastAPI, Uvicorn, Asyncio) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 316.00 562.60 Tm (Non-blocking event loop; native multipart MJPEG streaming.) Tj ET
+1.000 1.000 1.000 rg 42 544.60 511 14 re f
+0.88 0.90 0.93 rg 42 544.60 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 548.60 Tm (Tactical Frontend) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 156.00 548.60 Tm (React 18, Vite, HTML5 Canvas) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 316.00 548.60 Tm (Component modularity, instant HMR, 60 FPS animated radar sweep.) Tj ET
+0.970 0.980 0.990 rg 42 530.60 511 14 re f
+0.88 0.90 0.93 rg 42 530.60 511 0.5 re f
+0.160 0.180 0.220 rg BT /F2 7.7 Tf 1 0 0 1 46.00 534.60 Tm (DevOps & Reliability) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 156.00 534.60 Tm (Docker, Docker Compose, Pytest) Tj ET
+0.160 0.180 0.220 rg BT /F1 7.7 Tf 1 0 0 1 316.00 534.60 Tm (20/20 unit/integration tests passing; single-command deployment.) Tj ET
+0.82 0.86 0.90 rg 42 32.00 511 0.8 re f
+0.450 0.480 0.520 rg BT /F1 7.2 Tf 1 0 0 1 42.00 17.00 Tm (CONFIDENTIAL & PREPARED FOR TECHNICAL REVIEWS | C-UAS AIRSPACE DEFENSE) Tj ET
+0.200 0.250 0.300 rg BT /F2 8.0 Tf 1 0 0 1 510.76 17.00 Tm (Page 4 of 5) Tj ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 17 0 R /Resources 3 0 R >>
+endobj
+17 0 obj
+<< /Length 3991 >>
+stream
+1 1 1 rg 0 0 595 842 re f
+0.11 0.16 0.23 rg 42 812.00 511 1.2 re f
+0.350 0.450 0.550 rg BT /F2 7.5 Tf 1 0 0 1 42.00 818.00 Tm (DRONE THREAT COMMAND & DETECTION SYSTEM | TECHNICAL GUIDE) Tj ET
+0.11 0.16 0.24 rg 42 778.00 511 20 re f
+1.000 1.000 1.000 rg BT /F2 10.2 Tf 1 0 0 1 50.00 782.00 Tm (9. TOP TECHNICAL INTERVIEW QUESTIONS & MASTER ANSWERS) Tj ET
+0.080 0.320 0.580 rg BT /F2 9.0 Tf 1 0 0 1 42.00 760.00 Tm (Q1: What is the difference between Object Detection and Object Tracking in your system?) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 754.00 Tm (Object detection \(YOLOv8\) analyzes single frames to find bounding boxes without temporal memory. Our) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 742.80 Tm (Centroid Tracker associates detections across sequential frames using Euclidean distance, assigns persistent) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 731.60 Tm (Track IDs, calculates velocity \(px/frame\), tracks loitering duration, and projects trajectory vectors.) Tj ET
+0.080 0.320 0.580 rg BT /F2 9.0 Tf 1 0 0 1 42.00 704.40 Tm (Q2: How does the system achieve low-latency video streaming in the browser?) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 698.40 Tm (We implemented an asynchronous MJPEG generator in FastAPI using) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 687.20 Tm (StreamingResponse\(media_type='multipart/x-mixed-replace; boundary=frame'\). The server encodes frames on the) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 676.00 Tm (fly and streams raw JPEG byte arrays directly to standard HTML5 <img> tags, bypassing the heavy buffering) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 664.80 Tm (latency of HLS or WebRTC.) Tj ET
+0.080 0.320 0.580 rg BT /F2 9.0 Tf 1 0 0 1 42.00 637.60 Tm (Q3: How do you distinguish between birds and small commercial drones?) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 631.60 Tm (We employ a three-stage validation strategy: 1\) Deep convolutional visual feature classification in YOLOv8,) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 620.40 Tm (2\) Kinematic trajectory analysis detecting sudden sharp hovers and velocity spikes unique to quadcopters,) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 609.20 Tm (and 3\) RF telemetry verification detecting 2.4/5.8 GHz control link emissions and Remote ID broadcasts.) Tj ET
+0.080 0.320 0.580 rg BT /F2 9.0 Tf 1 0 0 1 42.00 582.00 Tm (Q4: How do you handle target occlusion when a drone flies behind trees or structures?) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 576.00 Tm (In tracker.py, each track maintains hits and missed_frames counters. When an object is occluded, its track) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 564.80 Tm (enters an aging state for up to 20 frames. If the target reappears within this window, it re-associates with) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 553.60 Tm (its existing Track ID and restores its history rather than generating a false duplicate track.) Tj ET
+0.080 0.320 0.580 rg BT /F2 9.0 Tf 1 0 0 1 42.00 526.40 Tm (Q5: How would you scale this system from a prototype to a full commercial airport deployment?) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 520.40 Tm (1\) Deploy distributed edge inference nodes \(NVIDIA Jetson / TensorRT\) at each camera mast, 2\) Stream) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 509.20 Tm (detections over an Apache Kafka or MQTT message broker, 3\) Ingest high-frequency telemetry into) Tj ET
+0.180 0.200 0.240 rg BT /F1 8.1 Tf 1 0 0 1 48.00 498.00 Tm (TimescaleDB/PostgreSQL, and 4\) Interface physical SDRs \(HackRF/USRP\) and ASTERIX CAT radar hardware.) Tj ET
+0.82 0.86 0.90 rg 42 32.00 511 0.8 re f
+0.450 0.480 0.520 rg BT /F1 7.2 Tf 1 0 0 1 42.00 17.00 Tm (CONFIDENTIAL & PREPARED FOR TECHNICAL REVIEWS | C-UAS AIRSPACE DEFENSE) Tj ET
+0.200 0.250 0.300 rg BT /F2 8.0 Tf 1 0 0 1 510.76 17.00 Tm (Page 5 of 5) Tj ET
+endstream
+endobj
+xref
+0 14
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000142 00000 n 
+0000000298 00000 n 
+0000000402 00000 n 
+0000005678 00000 n 
+0000005782 00000 n 
+0000010610 00000 n 
+0000010716 00000 n 
+0000015305 00000 n 
+0000015411 00000 n 
+0000020123 00000 n 
+0000020229 00000 n 
+trailer
+<< /Size 14 /Root 1 0 R >>
+startxref
+24273
+%%EOF

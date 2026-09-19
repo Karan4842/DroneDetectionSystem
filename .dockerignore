@@ -1,0 +1,15 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.git
+.gitignore
+.vscode
+.edge-profile*
+node_modules
+frontend/node_modules
+frontend/dist
+outputs/alerts/*
+outputs/uploads/*
+outputs/logs/*
+!outputs/logs/.gitkeep

@@ -15,7 +15,13 @@ export default defineConfig({
       "/artifacts": "http://127.0.0.1:8000",
       "/live": "http://127.0.0.1:8000",
       "/analyze-image": "http://127.0.0.1:8000",
-      "/detector": "http://127.0.0.1:8000"
+      "/detector": "http://127.0.0.1:8000",
+      "/video_feed": "http://127.0.0.1:8000",
+      "/sensors": "http://127.0.0.1:8000",
+      "/countermeasures": "http://127.0.0.1:8000",
+      "/analytics": "http://127.0.0.1:8000",
+      "/report": "http://127.0.0.1:8000",
+      "/demo": "http://127.0.0.1:8000"
     }
   }
 });
